@@ -9,6 +9,7 @@ class Controller:
         self.q = Queue()
         self.items = []
         self.visited = {}
+        self.lock = threading.RLock()
 
     def orderStates(self, states):
 
@@ -66,10 +67,12 @@ class Controller:
         succesors = self.problem.expand(currentState)
         succesors1 = self.orderStates(succesors)
         for x in succesors1:
+            self.lock.acquire()
             if not visited.get(hashlib.sha224(x.getValues().__str__().encode('utf-8')).hexdigest(), False):
                 visited[hashlib.sha224(x.getValues().__str__().encode('utf-8')).hexdigest()] = True
                 # print(x)
                 self.items.append(x)
+            self.lock.release()
 
     def runGBFSparallel(self):
 
