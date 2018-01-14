@@ -16,6 +16,7 @@ class Problem:
         desc = []
         for i in range(self.n):
             for j in range(self.n):
+                # based on the row and column of the current tile, we determine the next possible moves
                 if state.getValue(i, j) == 0:
                     if i - 1 >= 0:
                         mat = state.getValues()
@@ -42,6 +43,7 @@ class Problem:
 
     def heuristic(self, state1):
         # Manhattan distance
+        #a measure of how far from the final configuration the current one is
         distance = 0
         for x in range(self.n):
             for y in range(self.n):
@@ -49,6 +51,8 @@ class Problem:
                 x_value = x
                 y_value = y
                 x_goal, y_goal = self.finalState.findCoordinates(value)
+                # computes the sum of the differences between the position of the tile
+                # in the current configuration and in the final one
                 distance += abs(x_value - x_goal) + abs(y_value - y_goal)
 
         # print(state1.__str__() + " -> "+ str(distance) + "  " + str(state1.steps))
